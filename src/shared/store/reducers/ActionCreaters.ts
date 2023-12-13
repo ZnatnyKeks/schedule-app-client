@@ -53,3 +53,15 @@ export const logout = createAsyncThunk(
         }
     }
 )
+export const nextPair = createAsyncThunk(
+    'user/next-pair',
+    async (userId:string, thunkApi) => {
+        try {
+            const response = await api.post<void>(`user/next-pair/${userId}`)
+            return response.data;
+        } catch (error) {
+            return thunkApi.rejectWithValue("Getting pair error");
+        }
+    }
+)
+

@@ -1,17 +1,10 @@
-import { Button } from "@/shared/components/ui/button";
-import { useAppDispatch, useAppSelector } from "@/shared/store/hooks";
-import { logout } from "@/shared/store/reducers/ActionCreaters";
+import PairSelecter from "@/widgets/pairSelecter/PairSelecter";
 
 export default function HomePage() {
-    const {isLoading} = useAppSelector(state => state.userReducer)
-    const dispatch = useAppDispatch()
-    const handleLogout = () => {
-        dispatch(logout())
-    }
+
     return (
-        <>
-            home page
-            <Button disabled={isLoading}  onClick={handleLogout}>Logout</Button>
-        </>
+        <div className="w-full h-full min-h-screen flex gap-y-4 justify-center items-center flex-col">
+            <PairSelecter />
+        </div>
     )
 }

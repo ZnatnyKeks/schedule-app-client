@@ -47,7 +47,6 @@ const AuthForm: FC<Props> = ({ action, setAction }) => {
             })
         }
     }, [error, toast])
-    console.log(user.email);
     
     if (user.email) {
         return <Navigate to={'/'} />
@@ -55,14 +54,15 @@ const AuthForm: FC<Props> = ({ action, setAction }) => {
 
     const onSubmit = (values: z.infer<typeof formSchema>) => {
         const { email, password, name, role } = values;
+        const age = Number(values.age)
         if (action === Action.LOGIN) {
             const req: AuthRequest = {
                 email,
                 password
             }
             dispatch(login(req));
-        } else if (name && role) {
-            const req: RegisterRequest = { email, password, name, role }
+        } else if (name && role && age) {
+            const req: RegisterRequest = { email, password, name, role, age }
             dispatch(register(req));
         }
     }
@@ -85,9 +85,6 @@ const AuthForm: FC<Props> = ({ action, setAction }) => {
                             <FormControl>
                                 <Input autoComplete="username" disabled={isLoading} placeholder="jhon@mail.ru" {...field} />
                             </FormControl>
-                            <FormDescription>
-                                Адрес электронной почты
-                            </FormDescription>
                             <FormMessage />
                         </FormItem>
                     )}
@@ -101,9 +98,6 @@ const AuthForm: FC<Props> = ({ action, setAction }) => {
                             <FormControl>
                                 <Input autoComplete="current-password" disabled={isLoading} type="password" placeholder="secured.Password123"{...field} />
                             </FormControl>
-                            <FormDescription>
-                                Ваш супер надежный и секретный пароль
-                            </FormDescription>
                             <FormMessage />
                         </FormItem>
                     )}
@@ -113,6 +107,19 @@ const AuthForm: FC<Props> = ({ action, setAction }) => {
                     <>
                         <FormField
                             control={form.control}
+                            name="age"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Возраст</FormLabel>
+                                    <FormControl>
+                                        <Input autoComplete="age" disabled={isLoading} type='number' placeholder="21"{...field} />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            control={form.control}
                             name="name"
                             render={({ field }) => (
                                 <FormItem>
@@ -120,9 +127,6 @@ const AuthForm: FC<Props> = ({ action, setAction }) => {
                                     <FormControl>
                                         <Input autoComplete="name" disabled={isLoading} placeholder="Иван"{...field} />
                                     </FormControl>
-                                    <FormDescription>
-                                        Кто такой красотулька?
-                                    </FormDescription>
                                     <FormMessage />
                                 </FormItem>
                             )}
@@ -178,9 +182,6 @@ const AuthForm: FC<Props> = ({ action, setAction }) => {
                                             </Command>
                                         </PopoverContent>
                                     </Popover>
-                                    <FormDescription>
-                                        От типа зависят, доступные возможности
-                                    </FormDescription>
                                     <FormMessage />
                                 </FormItem>
                             )}
