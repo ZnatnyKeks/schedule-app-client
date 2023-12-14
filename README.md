@@ -1,2 +1,4 @@
-# react-vite-template
-Template for creating React project using vite
+# Schedule app [Client]
+* React
+* Redux Toolkit (RTK Query)
+* axios
