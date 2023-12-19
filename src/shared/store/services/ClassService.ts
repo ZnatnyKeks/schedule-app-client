@@ -1,4 +1,4 @@
-import { IClass } from "@/entities/Class";
+import { IClass } from "@/entities/class/models/Class";
 import { API_URL } from "@/shared/lib/http";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 

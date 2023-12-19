@@ -1,3 +1,6 @@
+import ClassBlock from "@/entities/class/components/ClassBlock";
+import { getWeekday } from "@/entities/class/helpers/getWeekday";
+import { Weekday } from "@/entities/class/models/Weekday";
 import Loader from "@/shared/components/ui/loader";
 import { useAppSelector } from "@/shared/store/hooks";
 import { classApi } from "@/shared/store/services/ClassService";
@@ -13,11 +16,15 @@ const Calendar = () => {
     }
     if (data) {
         return (
-            <div>
-                {data.map((schoolClass) => (
-                    <div key={schoolClass.id}>
-                        {schoolClass.weekday}
-                        {schoolClass.hour}
+            <div className="p-4 flex flex-row gap-x-4 justify-between">
+                {Object.values(Weekday).map(weekday => (
+                    <div key={weekday} className="flex flex-col gap-y-4 p-2">
+                        <h1>{getWeekday(weekday)}</h1>
+                        <div>
+                            {data.filter(schoolClass => schoolClass.weekday === weekday).map((schoolClass) => (
+                                <ClassBlock key={schoolClass.id} classData={schoolClass} />
+                            ))}
+                        </div>
                     </div>
                 ))}
             </div>

@@ -18,6 +18,16 @@ export const subjectApi = createApi({
             }),
             providesTags: () => ["Subject"]
         }),
+        fetchSubjectById: build.query<ISubject, string>({
+            query: (id) => ({
+                url: "/one",
+                credentials: "include",
+                params: {
+                    id: id
+                },
+                headers: { Authorization: `Bearer ${token}` }
+            }),
+        }),
         createSubject: build.mutation<ISubject, ISubject>({
             query: (subject) => ({
                 url: "/create",

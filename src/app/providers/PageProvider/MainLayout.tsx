@@ -7,7 +7,7 @@ export default function MainLayout() {
         <>
             <Toaster />
             <Header />
-            <main className="h-full min-h-screen pt-16">
+            <main className="h-full min-h-screen">
                 <Outlet />
             </main>
         </>

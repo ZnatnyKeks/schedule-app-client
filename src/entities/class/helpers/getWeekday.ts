@@ -1,4 +1,4 @@
-import { Weekday } from "./Weekday";
+import { Weekday } from "../models/Weekday";
 
 export function getWeekday(weekday: Weekday) {
     switch (weekday) {

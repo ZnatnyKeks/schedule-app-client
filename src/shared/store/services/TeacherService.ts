@@ -14,6 +14,16 @@ export const teacherApi = createApi({
                 credentials: "include",
                 headers: { Authorization: `Bearer ${token}` }
             })
-        })
+        }),
+        fetchTeacherById: build.query<ITeacher, string>({
+            query: (id) => ({
+                url: "/one",
+                credentials: "include",
+                params: {
+                    id: id
+                },
+                headers: { Authorization: `Bearer ${token}` }
+            }),
+        }),
     })
 })

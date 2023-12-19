@@ -13,10 +13,10 @@ import LoadingButton from "@/features/LoadingButton"
 import { subjectApi } from '@/shared/store/services/SubjectService'
 import { teacherApi } from '@/shared/store/services/TeacherService'
 import { useEffect, useState } from 'react'
-import { Weekday } from '@/entities/Weekday'
-import { getWeekday } from '@/entities/getWeekday'
+import { Weekday } from '@/entities/class/models/Weekday'
+import { getWeekday } from '@/entities/class/helpers/getWeekday'
 import { classApi } from '@/shared/store/services/ClassService'
-import { IClass } from '@/entities/Class'
+import { IClass } from '@/entities/class/models/Class'
 import Loader from '@/shared/components/ui/loader'
 import { groupApi } from '@/shared/store/services/GroupService'
 

@@ -5,5 +5,4 @@ export enum Weekday  {
     THURSDAY = "THURSDAT",
     FRIDAY = "FRIDAY",
     SATURDAY = "SATURDAY",
-    SUNDAY = "SUNDAY" 
 }
