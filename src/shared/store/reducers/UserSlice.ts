@@ -1,17 +1,15 @@
 import { AuthResponse } from "@/entities/auth/models/AuthResponse";
 import { IUser } from "@/entities/user";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { login, logout, nextPair, register } from "./ActionCreaters";
+import { login, logout, register } from "./ActionCreaters";
 
 interface UserState {
     user: IUser;
-    pair:IUser;
     isLoading: boolean;
     error: string,
 }
 const initialState: UserState = {
     user: {} as IUser,
-    pair: {} as IUser,
     isLoading: false,
     error: ''
 }
@@ -79,20 +77,6 @@ export const userSlice = createSlice({
             state.error = action.payload;
         },
         [logout.pending.type]: (state) => {
-            state.error = ""
-            state.isLoading = true;
-        },
-        [nextPair.fulfilled.type]: (state, action: PayloadAction<IUser>) => {
-            state.isLoading = false;
-            state.error = '';
-            state.pair = action.payload;
-
-        },
-        [nextPair.rejected.type]: (state, action: PayloadAction<string>) => {
-            state.isLoading = false;
-            state.error = action.payload;
-        },
-        [nextPair.pending.type]: (state) => {
             state.error = ""
             state.isLoading = true;
         },

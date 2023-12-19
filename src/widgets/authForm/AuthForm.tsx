@@ -1,6 +1,6 @@
 import { FC, useEffect } from 'react'
 import { Action } from '../../pages/auth/action'
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/shared/components/ui/form'
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/shared/components/ui/form'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useToast } from '@/shared/components/ui/use-toast'
@@ -33,8 +33,8 @@ const AuthForm: FC<Props> = ({ action, setAction }) => {
         defaultValues: {
             email: "",
             password: "",
-            role: UserRole.ADMIN,
-            name: ''
+            name: '',
+            role: UserRole.STUDENT,
         }
     })
     useEffect(() => {
@@ -47,22 +47,21 @@ const AuthForm: FC<Props> = ({ action, setAction }) => {
             })
         }
     }, [error, toast])
-    
+
     if (user.email) {
         return <Navigate to={'/'} />
     }
 
     const onSubmit = (values: z.infer<typeof formSchema>) => {
         const { email, password, name, role } = values;
-        const age = Number(values.age)
         if (action === Action.LOGIN) {
             const req: AuthRequest = {
                 email,
                 password
             }
             dispatch(login(req));
-        } else if (name && role && age) {
-            const req: RegisterRequest = { email, password, name, role, age }
+        } else if (name && role) {
+            const req: RegisterRequest = { email, password, name, role }
             dispatch(register(req));
         }
     }
@@ -107,19 +106,6 @@ const AuthForm: FC<Props> = ({ action, setAction }) => {
                     <>
                         <FormField
                             control={form.control}
-                            name="age"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Возраст</FormLabel>
-                                    <FormControl>
-                                        <Input autoComplete="age" disabled={isLoading} type='number' placeholder="21"{...field} />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                        <FormField
-                            control={form.control}
                             name="name"
                             render={({ field }) => (
                                 <FormItem>
@@ -149,7 +135,7 @@ const AuthForm: FC<Props> = ({ action, setAction }) => {
                                                     )}
                                                 >
                                                     {field.value
-                                                        ? getRole(Object.values(UserRole).find((role) => role === field.value) || UserRole.USER)
+                                                        ? getRole(Object.values(UserRole).find((role) => role === field.value) || UserRole.STUDENT)
                                                         : "Выберите тип аккаунта"}
                                                     <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                                                 </Button>
