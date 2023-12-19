@@ -8,13 +8,15 @@ const token = localStorage.getItem('token')
 export const subjectApi = createApi({
     reducerPath: "subjectApi",
     baseQuery: fetchBaseQuery({ baseUrl: `${API_URL}subject` }),
+    tagTypes: ['Subject'],
     endpoints: (build) => ({
         fetchAllSubjects: build.query<ISubject[], number>({
             query: () => ({
                 url: "/all",
                 credentials: "include",
                 headers: { Authorization: `Bearer ${token}` }
-            })
+            }),
+            providesTags: () => ["Subject"]
         }),
         createSubject: build.mutation<ISubject, ISubject>({
             query: (subject) => ({
@@ -23,7 +25,8 @@ export const subjectApi = createApi({
                 headers: { Authorization: `Bearer ${token}` },
                 method: "POST",
                 body: subject
-            })
+            }),
+            invalidatesTags: ['Subject']
         })
     })
 })

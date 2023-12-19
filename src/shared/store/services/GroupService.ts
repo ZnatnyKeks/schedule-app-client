@@ -8,13 +8,16 @@ const token = localStorage.getItem('token')
 export const groupApi = createApi({
     reducerPath: "groupApi",
     baseQuery: fetchBaseQuery({ baseUrl: `${API_URL}group` }),
+    tagTypes: ['Group'],
     endpoints: (build) => ({
         fetchAllGroups: build.query<IGroup[], number>({
             query: () => ({
                 url: "/all",
                 credentials: "include",
                 headers: { Authorization: `Bearer ${token}` }
-            })
+            }),
+            providesTags: () => ["Group"]
+
         }),
         createGroup: build.mutation<IGroup, IGroup>({
             query: (group) => ({
@@ -23,7 +26,8 @@ export const groupApi = createApi({
                 headers: { Authorization: `Bearer ${token}` },
                 method: "POST",
                 body: group
-            })
+            }),
+            invalidatesTags: ['Group']
         })
     })
 })

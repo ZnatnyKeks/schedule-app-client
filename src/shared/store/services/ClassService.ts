@@ -8,13 +8,18 @@ const token = localStorage.getItem('token')
 export const classApi = createApi({
     reducerPath: "classApi",
     baseQuery: fetchBaseQuery({ baseUrl: `${API_URL}class` }),
+    tagTypes: ['Class'],
     endpoints: (build) => ({
-        fetchAllClasses: build.query<IClass[], number>({
-            query: () => ({
+        fetchAllClasses: build.query<IClass[], string>({
+            query: (userId: string) => ({
                 url: "/all",
+                params: {
+                    userId: userId
+                },
                 credentials: "include",
                 headers: { Authorization: `Bearer ${token}` }
-            })
+            }),
+            providesTags: () => ["Class"]
         }),
         createClass: build.mutation<IClass, IClass>({
             query: (classData) => ({
@@ -23,7 +28,8 @@ export const classApi = createApi({
                 headers: { Authorization: `Bearer ${token}` },
                 method: "POST",
                 body: classData
-            })
+            }),
+            invalidatesTags: ['Class']
         })
     })
 })

@@ -18,18 +18,21 @@ import { getWeekday } from '@/entities/getWeekday'
 import { classApi } from '@/shared/store/services/ClassService'
 import { IClass } from '@/entities/Class'
 import Loader from '@/shared/components/ui/loader'
+import { groupApi } from '@/shared/store/services/GroupService'
 
 
 const CreateClassForm = () => {
     const [isLoading, setIsLoading] = useState(false);
     const subjectResponse = subjectApi.useFetchAllSubjectsQuery(100);
     const teacherResponse = teacherApi.useFetchAllTeacherQuery(100);
+    const groupResponse = groupApi.useFetchAllGroupsQuery(100);
     const [createClass] = classApi.useCreateClassMutation();
     useEffect(() => {
         setIsLoading(subjectResponse.isLoading || teacherResponse.isLoading)
     }, [subjectResponse.isLoading, teacherResponse.isLoading]);
     const subjects = subjectResponse.data;
     const teachers = teacherResponse.data;
+    const groups = groupResponse.data;
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -52,8 +55,8 @@ const CreateClassForm = () => {
             </div>
         )
     }
-    if (!subjects || !teachers) {
-        return <h3>No teachers or subjects</h3>
+    if (!subjects || !teachers || !groups) {
+        return <h3>No teachers or subjects or groups</h3>
     }
     return (
         <Form {...form}>
@@ -240,6 +243,61 @@ const CreateClassForm = () => {
                                                                 : "opacity-0"
                                                         )} />
                                                     {teacher.name}
+                                                </CommandItem>
+                                            ))}
+                                        </CommandGroup>
+                                    </Command>
+                                </PopoverContent>
+                            </Popover>
+                            <FormMessage />
+                        </FormItem>
+                    )}
+                />
+                <FormField
+                    control={form.control}
+                    name="groupIds"
+                    render={({ field }) => (
+                        <FormItem className="flex flex-col">
+                            <FormLabel>Группы</FormLabel>
+                            <Popover>
+                                <PopoverTrigger asChild>
+                                    <FormControl>
+                                        <Button
+                                            variant="outline"
+                                            role="combobox"
+                                            className={cn(
+                                                "w-auto justify-between",
+                                                !field.value && "text-muted-foreground"
+                                            )}
+                                        >
+                                            {field.value
+                                                ? groups.filter(group => group.id === field.value.find(id => id === group.id)).map(group => group.number).join(', ')
+                                                : "Выберите группу"}
+                                            <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                                        </Button>
+                                    </FormControl>
+                                </PopoverTrigger>
+                                <PopoverContent className="w-[200px] p-0">
+                                    <Command>
+                                        <CommandInput disabled={isLoading} placeholder="Найти группу..." />
+                                        <CommandEmpty>Группа не найден</CommandEmpty>
+                                        <CommandGroup>
+                                            {groups.map((group) => (
+                                                <CommandItem
+                                                    value={`Группа ${group.number}`}
+                                                    key={group.id}
+                                                    onSelect={() => {
+                                                        form.setValue("groupIds", field.value.find(id => id === group.id) ? field.value.filter(id => id !== group.id) : [...field.value, group.id])
+                                                    }}
+                                                >
+                                                    <Check
+                                                        className={cn(
+                                                            "mr-2 h-4 w-4",
+                                                            field.value.find((id) => id === group.id)
+                                                                ? "opacity-100"
+                                                                : "opacity-0"
+                                                        )} />
+                                                    {group.number}
                                                 </CommandItem>
                                             ))}
                                         </CommandGroup>
